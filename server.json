@@ -1,0 +1,37 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.grisoco/audits",
+  "title": "Grisoco AI security audits",
+  "description": "Smart-contract security audits for EVM chains and DAML: quote, run and fetch reports.",
+  "version": "1.0.0",
+  "websiteUrl": "https://grisoco.com/developers",
+  "icons": [
+    {
+      "src": "https://grisoco.com/favicon.svg",
+      "mimeType": "image/svg+xml"
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://grisoco.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Your Grisoco API key, sent as a bearer token. Create one in the workspace under Agent API.",
+          "value": "Bearer {api_key}",
+          "isRequired": true,
+          "isSecret": true,
+          "variables": {
+            "api_key": {
+              "description": "Grisoco API key (starts with grisoco_sk_)",
+              "isRequired": true,
+              "isSecret": true,
+              "placeholder": "grisoco_sk_..."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
