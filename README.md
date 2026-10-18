@@ -20,7 +20,7 @@ Each audit runs deterministic tools and a deep AI review, checks every finding b
 ## Get a key
 
 1. Sign in at [grisoco.com](https://grisoco.com/app) and top up your balance with USDC.
-2. Open **Agent API**, create a key and set a **daily spending cap**: the most that key may spend per day, whatever your balance.
+2. Open **Create API key**, create a key and set a **daily spending cap**: the most that key may spend per day, whatever your balance.
 3. Copy the key (it starts with `grisoco_sk_`). It is shown once; keep it in a secret store, never in source code.
 
 ## Connect
@@ -63,11 +63,21 @@ A typical flow: `quote_audit` → `submit_audit` with the quoted price → poll 
 
 - Priced per contract, no subscription. Files that are only imported are free. Current prices: https://grisoco.com/pricing
 - An audit that fails on our side is refunded automatically.
-- Each key has a daily spending cap, and keys can only run and read audits and see the balance.
+- Each key has a daily spending cap, and keys can only run and read audits, run transaction checks and see the balance.
 
 ## REST
 
 The same flow is available over plain REST (`POST /v1/audits/quote`, `POST /v1/audits`, `GET /v1/audits/{id}`, `GET /v1/audits/{id}/report`). See https://grisoco.com/developers.
+
+## Also with the same key: Agent Transaction Check
+
+Before your agent signs an **on-chain payment** (a token sent to one recipient on Base, Ethereum or Polygon, as a transaction or a gasless EIP-3009 / x402 authorization), it can ask Grisoco whether the transaction does exactly what it means to pay: the right token, the exact amount, the right recipient, and nothing else. The answer is `allow`, `warn` or `block`, with a reason per check. Rule-based, no AI.
+
+- **Endpoint:** `POST https://check.grisoco.com/v1/check` (REST; not an MCP tool yet)
+- **Payments only:** swaps, deposits, mints and other calls are not checked
+- **Two rules:** take the intent (token, amount, recipient) from your user's task, never from the payment request; and fail closed — sign only on `allow`, never on an error or timeout
+- **Price:** per verdict, from the same balance: https://grisoco.com/pricing
+- **Guide:** https://grisoco.com/transaction-check · **OpenAPI:** https://grisoco.com/transaction-check/openapi.json
 
 ## Important
 
