@@ -1,6 +1,8 @@
-# Grisoco AI — security audits for AI agents (MCP)
+# Grisoco AI — smart-contract audits and payment checks for AI agents
 
 Let your AI agent order its own smart-contract security audit. Grisoco AI audits **Solidity on any EVM chain** and **DAML (Canton)** packages, and exposes the whole flow as a remote [MCP](https://modelcontextprotocol.io) server: your agent quotes, submits, polls and collects the report on its own, paid from your prepaid Grisoco balance.
+
+The same API key also runs the **Agent Transaction Check**: before your agent signs a crypto payment, Grisoco checks the transaction does exactly what it means to pay (the right token, the exact amount, the right recipient) and nothing else, and answers allow, warn or block. See [below](#also-with-the-same-key-agent-transaction-check).
 
 - **MCP endpoint:** `https://grisoco.com/mcp` (Streamable HTTP)
 - **Auth:** a Grisoco API key, sent as `Authorization: Bearer grisoco_sk_...`
