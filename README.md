@@ -13,7 +13,7 @@ This repository holds the listing and setup instructions. The server itself is h
 
 - **Solidity on EVM chains:** Ethereum, Polygon, BNB Chain, Arbitrum, Optimism, Base.
 - **DAML packages for Canton (Daml 3.x):** authorization, privacy, contention and liveness, interfaces and upgrades. Authorization findings are proven by execution.
-- **AI-agent payment accounts:** smart accounts and session keys (ERC-4337, ERC-7579, ERC-7710) get a dedicated delegation review covering spend limits, permission storage, delegation narrowing, expiry and revocation, and the reach of each granted scope.
+- **AI-agent payment accounts:** smart accounts and session keys (ERC-4337, ERC-7579, ERC-7710) get a dedicated delegation review of how the account's code enforces spend limits, permission storage, delegation narrowing, expiry and revocation, and the reach of each granted scope.
 
 Each audit runs deterministic tools and a deep AI review, checks every finding before it is reported, and returns one report with severity, location, a proof-of-concept plan and a remedy per finding.
 
@@ -73,6 +73,8 @@ The same flow is available over plain REST (`POST /v1/audits/quote`, `POST /v1/a
 
 Before your agent signs an **on-chain payment** (a token sent to one recipient on Base, Ethereum or Polygon, as a transaction or a gasless EIP-3009 / x402 authorization), it can ask Grisoco whether the transaction does exactly what it means to pay: the right token, the exact amount, the right recipient, and nothing else. The answer is `allow`, `warn` or `block`, with a reason per check. Rule-based, no AI.
 
+- **What it catches:** a swapped recipient; a look-alike token; more leaving than the stated amount; an extra token, coin or NFT hidden in the same transaction; a spending approval slipped in (unlimited approvals and Permit2 allowances block); any change of who controls the wallet (Safe owner, module or guard, ownership handover, proxy upgrade, role grant, EIP-7702 delegation); a token that moves money without reporting it; a transaction that would revert
+- **Not a spending limit:** a maximum amount, allowed tokens and allowed recipients are optional extras. The check itself runs the transaction against the live chain and compares what it would actually do with what your agent says it means to pay
 - **Endpoint:** `POST https://check.grisoco.com/v1/check` (REST; not an MCP tool yet)
 - **Payments only:** swaps, deposits, mints and other calls are not checked
 - **Two rules:** take the intent (token, amount, recipient) from your user's task, never from the payment request; and fail closed — sign only on `allow`, never on an error or timeout
